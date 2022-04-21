@@ -3,6 +3,7 @@
 const express = require('express')
 const ejs = require('ejs')
 const mongoose = require('mongoose')
+const encrypt = require('mongoose-encryption')
 
 const app = express()
 
@@ -34,10 +35,14 @@ mongoose.connect("mongodb://localhost:27017/userDB", { useNewUrlParser: true }, 
     console.log(dbState.find(f => f.value == state).label, "to DB");
 });
 
-const userSchema = {
+const userSchema = new mongoose.Schema({
     email: String,
     password: String
-}
+})
+
+const secret = "Thisisourlittlesecret"
+
+userSchema.plugin(encrypt, { secret, encryptedFields: ["password"] })
 
 const User = new mongoose.model("User", userSchema)
 
@@ -97,7 +102,7 @@ app.post("/register", function (req, res) {
 
 
 app.listen(3000, () => {
-    console.log("Server started on port 3000");
+    console.log("Server started on port http://localhost:3000");
 })
 
 
