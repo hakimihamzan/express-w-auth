@@ -1,5 +1,6 @@
 //jshint esversion:6
 // const bodyParser = require('body-parser') // body-parser is included in express
+require('dotenv').config()
 const express = require('express')
 const ejs = require('ejs')
 const mongoose = require('mongoose')
@@ -40,7 +41,7 @@ const userSchema = new mongoose.Schema({
     password: String
 })
 
-const secret = "Thisisourlittlesecret"
+const secret = process.env.SECRET
 
 userSchema.plugin(encrypt, { secret, encryptedFields: ["password"] })
 
